@@ -1,0 +1,238 @@
+{% extends "games/base.html" %}
+{% load static %}
+
+
+{% block title %}
+Гра
+{% endblock %}
+
+
+{% block additional_css %}
+<link rel="stylesheet" href="{% static 'css/post_detail.css' %}" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5 text-light">
+    <h1 class="mb-5" style="color: #ffd700; font-weight: bold;">Назва відеогри</h1>
+    <ul class="nav nav-tabs mb-3 border-1  border-danger-subtle" id="contentTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="mainContent-tab" data-bs-toggle="tab" href="#mainContent">Головний
+                контент</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-bs-toggle="tab" href="#comments">Коментарі</a>
+        </li>
+    </ul>
+    <!-- Зміст вкладок -->
+    <div class="tab-content ">
+        <!-- Вміст для вкладки "Головний контент" -->
+        <div class="tab-pane fade show active" id="mainContent">
+            <!-- Ваш головний контент -->
+            <div class="row ">
+                <div class="col-lg-8">
+                    <!-- Відео або банер -->
+                    <!-- Замініть URL відео або зображення на свої -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <!-- Якщо є відео -->
+                        <div class="ratio ratio-16x9 ">
+                            <iframe src="https://www.youtube.com/embed/VaD2Fwb47ew?si=jnxJZfP-2_iqu94i"
+                                    title="YouTube video"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                        <!-- Список скріншотів -->
+
+                        <ul class="screenshot-list ">
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 1"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 2"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 1"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 2"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 1"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 2"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+                            <li class="screenshot-item"><img src="{% static 'img/background.jpg' %}"
+                                                             class="screenshot-img"
+                                                             alt="Скріншот 3"></li>
+
+                        </ul>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card bg-dark text-light border border-danger-subtle">
+                        <div class="row g-0">
+                            <div class="card-body ">
+                                <h5 class="card-title">Ціна: $XX.XX</h5>
+                                <p class="card-text">Додаткова інформація про продукт, якщо потрібно.</p>
+
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-between d-flex">
+
+                                    <a href="#" style="color:white;"><i class="fa-brands fa-steam fa-2x"> </i></a>
+                                    <a href="#" class="btn btn-primary "
+                                       style="background-color: #f94ca4;">Придбати</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poster-container ">
+                        <img src="{% static 'img/background.jpg' %}" class="poster border border-danger-subtle"
+                             alt="Постер гри">
+                    </div>
+
+                    <div class="card bg-dark text-light border border-danger-subtle">
+                        <div class="row g-0">
+                            <div class="card-body ">
+                                <!-- Опис гри -->
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur corporis, cum,
+                                    deleniti
+                                    ducimus
+                                    facilis illo iure libero placeat quasi, repellat vel voluptatum. Amet impedit maxime
+                                    molestias
+                                    quasi
+                                    recusandae sed voluptatibus? Lorem ipsum dolor sit amet, consectetur adipisicing
+                                    elit. Accusamus
+                                    commodi, dolore dolores dolorum ex exercitationem fugiat impedit ipsam itaque minima
+                                    nemo non
+                                    officia
+                                    perferendis perspiciatis, reiciendis, sunt tenetur unde voluptas.
+                                    Опис гри. Тут може бути докладний опис відеогри.
+                                </p>
+                                <!-- Інша інформація -->
+                                <ul class="mt-5 mb-5">
+                                    <li class="mt-2"><strong>Рік випуску:</strong> Рік</li>
+                                    <li class="mt-2"><strong>Країна:</strong> Назва країни:</li>
+                                    <li class="mt-2"><strong>Виробник</strong> Назва компанії</li>
+                                </ul>
+
+                                <p class="cart-text">Локалізація:
+                                    <button type="button" class="btn btn-light ">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-location-dot"></i> Тег1</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-location-dot"></i></i> Тег2</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-location-dot"></i></i> Тег3</a>
+                                    </button>
+                                </p>
+                                <p class="cart-text">Жанри:
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-hashtag"></i> Тег1</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-hashtag"></i> Тег2</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-hashtag"></i> Тег3</a>
+                                    </button>
+                                <p class="cart-text">Платформа:
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-gamepad"></i></i> Тег1</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-gamepad"></i></i> Тег2</a>
+                                    </button>
+                                    <button type="button" class="btn btn-light">
+                                        <a href="#" class="text-dark"><i class="fa-solid fa-gamepad"></i></i> Тег3</a>
+                                    </button>
+
+
+                                    <!-- Додайте іншу інформацію за потребою -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Вміст для вкладки "Коментарі" -->
+        <div class="tab-pane fade " id="comments">
+            <!-- Тут може бути ваш вміст коментарів -->
+            <div class="card">
+                <div class="row g-0">
+                    <div class="card-body bg-dark text-light border border-danger-subtle">
+                        <!-- Форма для додавання коментарів -->
+                        <form class="comment-form">
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Коментар</label>
+                                <textarea class="form-control" id="commentText" rows="3"
+                                          placeholder="Ваш коментар"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Додати
+                                коментар
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="row g-0">
+                    <div class="card-body bg-dark text-light border border-danger-subtle">
+                        <!-- Форма для додавання коментарів -->
+                        <div id="comments-block" class="comment-list ">
+                            <!-- Приклад коментарів -->
+
+                            <!-- Додайте інші коментарі за потребою -->
+                            <div class="comment-item ">
+                                <strong class="mb-5"><a href="#"><img src="https://github.com/mdo.png" alt="mdo"
+                                                                      width="32" height="32"
+                                                                      class="rounded-circle"></a> Ім'я
+                                    користувача</strong>
+                                <p class="mt-3">Текст коментаря...</p>
+                                <hr>
+                            </div>
+                            <div class="comment-item">
+                                <strong><a href="#"><img src="https://github.com/mdo.png" alt="mdo" width="32"
+                                                         height="32"
+                                                         class="rounded-circle"></a> Ім'я користувача</strong>
+                                <p class="mt-3">Текст коментаря...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Блок для відображення коментарів -->
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

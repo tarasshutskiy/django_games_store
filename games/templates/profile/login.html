@@ -1,0 +1,52 @@
+{% extends "profile/auth.html" %}
+{% load static %}
+
+
+{% block title %}
+Авторизація
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5 ">
+    <div class="row justify-content-center ">
+        <div class="col-md-6">
+
+            <div id="error-message" class="alert alert-danger " role="alert"></div>
+
+            <div class="card bg-dark text-light border-danger-subtle">
+                <div class="card-body">
+                    <h3 class="text-center">Авторизація</h3>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Електронна пошта</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Увійти</button>
+                        </div>
+                    </form>
+
+                    <div class="mb-3 d-flex justify-content-center">
+                        <a class="btn btn-link btn-floating mx-1" style="color:white;">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a class="btn btn-link btn-floating mx-1 " style="color:white;">
+                            <i class="fab fa-github "></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

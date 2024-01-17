@@ -1,0 +1,50 @@
+{% extends "games/base.html" %}
+{% load static %}
+
+
+{% block title %}
+Гра
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark text-light border-danger-subtle">
+                <div class="card-body">
+                    <div class="jumbotron text-center">
+                        <h1 class="display-4">Ласкаво вас вітаємо на нашому сайті ігор!</h1>
+                        <p class="lead">Де кожен гравець знаходить свій світ розваг та можливість насолоджуватися
+                            найкращими
+                            відеоіграми.</p>
+                        <hr class="my-4">
+                        <p>Оберіть свою гру та зануртеся в найзахоплюючіший світ геймінгу.</p>
+                        <a class="btn btn-primary btn-lg" href="{% url 'games:post_list' %}" role="button">Дивитися ігри</a>
+                    </div>
+                    <hr class="my-4">
+                    <section>
+                        <h2 class="text-center">Купуйте та грайте</h2>
+                        <p>
+                            Ознайомтеся з нашим великим вибором ігор та замовляйте свої улюблені творіння. Ми гарантуємо
+                            ексклюзивні
+                            пропозиції та доступні ціни.
+                        </p>
+                        <p>
+                            Станьте частиною нашої геймінг-спільноти та отримуйте першими доступ до новинок та акцій.
+                        </p>
+                    </section>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+

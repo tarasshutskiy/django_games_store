@@ -1,0 +1,86 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block additional_css %}{% endblock %}
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand fs-4" href="#"><img class="logo" src="{% static 'img/logo.png' %}" alt=""></a>
+        <!-- Toggle btn -->
+        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+             aria-labelledby="offcanvasNavbarLabel">
+            <!-- Sidebar  Header-->
+            <div class="offcanvas-header text-white border-bottom">
+                <img class="logo" src="{% static 'img/logo.png' %}" alt="">
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+            </div>
+            <!-- Sidebar  Body-->
+            <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
+                <ul class="navbar-nav justify-content-center
+        align-items-center fs-5 flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'games:post_list' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'games:about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'games:contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#api">API</a>
+                    </li>
+                </ul>
+                <!-- Login /   Sign up-->
+                <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3">
+                    <a href="{% url 'users:login' %}" class="text-white text-decoration-none">Login</a>
+                    <a href="{% url 'users:register' %}" class="text-white text-decoration-none px-3 py-1  rounded-4"
+                       style="background-color: #f94ca4;">Sign up</a>
+                    <a href="{% url 'users:profile' %}"><img src="https://github.com/mdo.png" alt="mdo"
+                                     width="32" height="32"
+                                     class="rounded-circle"></a>
+                    <a href="#signup" class="text-white text-decoration-none px-3 py-1  rounded-4"
+                       style="background-color: #f94ca4;">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% block content%}
+{% endblock %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

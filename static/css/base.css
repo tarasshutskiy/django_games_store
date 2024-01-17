@@ -1,0 +1,16 @@
+body{
+    background: url('../img/background.jpg') rgba(0, 0, 0, 0.3);
+    background-blend-mode: multiply;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 50px;
+}
+
+.logo{
+    width:150px;
+}
+
+
+
+

@@ -1,0 +1,56 @@
+{% extends 'games/base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark text-light border-danger-subtle">
+                <div class="card-body">
+                    <header>
+                        <h1 class="text-center">Контактна інформація</h1>
+                    </header>
+
+
+                    <section>
+                        <p>Ми завжди раді відповісти на ваші питання та отримати ваші відгуки. Зв'яжіться з нами за
+                            допомогою
+                            наступних контактів:</p>
+
+                        <ul>
+                            <li>Email: <a href="mailto:info@example.com">info@example.com</a></li>
+                            <li>Телефон: +1 (123) 456-7890</li>
+                            <li>Адреса: вул. Вулична, 123, Місто</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 class="text-center">Форма зворотного зв'язку</h2>
+                        <p>Ви також можете зв'язатися з нами, заповнивши форму зворотного зв'язку нижче:</p>
+
+                        <form action="submit_form.php" method="post">
+                            <div class="mb-3">
+                                   <strong><a href="#"><img src="https://github.com/mdo.png" alt="mdo" width="32"
+                                                         height="32"
+                                                         class="rounded-circle"></a> Ім'я користувача</strong>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Повідомлення:</label>
+                                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <div class="mb-3 d-flex justify-content-center">
+                             <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Надіслати
+                            </button>
+                                </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

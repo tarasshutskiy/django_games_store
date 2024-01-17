@@ -1,0 +1,61 @@
+.filter {
+  width:30%;
+  float: left;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+
+.post {
+  width: 70%;
+  float: left;
+  padding-left:15px;
+
+}
+
+
+.card {
+  margin-bottom: 15px;
+}
+
+
+@media (max-width: 768px) { /* При зменшенні екрану параметри */
+  .filter  {
+    width: 100%;
+    float: none;
+  }
+  .post {
+    width: 100%;
+    float: none;
+    padding-left:0;
+    padding-top:20px;
+  }
+}
+
+
+
+.card-title {
+  font-size: 1.2rem; /* Розмір назви */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Обрізка, якщо текст не вміщується */
+}
+.card-text {
+  font-size: 1rem; /* Розмір опису */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Відображення не більше 2 рядків */
+  -webkit-box-orient: vertical;
+}
+.card-tags {
+  font-size: 0.9rem; /* Розмір тегів */
+}
+
+.pagination {
+    color-text:white;
+}

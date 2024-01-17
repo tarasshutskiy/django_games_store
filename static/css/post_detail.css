@@ -1,0 +1,79 @@
+   .game-media {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Приклад стилів для скріншотів */
+    .screenshot-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      justify-content:center;
+    }
+
+    .screenshot-item {
+      flex: 0 0 23%;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .screenshot-img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      transition: transform 0.3s;
+    }
+
+    .screenshot-img:hover {
+      transform: scale(1.5);
+    }
+
+    /* Додано стилі для адаптивного постера і його контейнера */
+    .poster-container {
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .poster {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Стилі для карточки */
+    .card {
+      margin-top: 20px;
+    }
+
+    /* Стилі для перемикача вкладок */
+    .nav-tabs {
+      margin-top: 20px;
+    }
+
+    .nav-tabs .nav-item {
+      margin-bottom: 0;
+    }
+
+    /* Стилі для блоку коментарів */
+    #comments-block {
+      margin-top: 20px;
+    }
+
+    .comment-form {
+      margin-top: 20px;
+    }
+
+    .comment-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .comment-item {
+      margin-bottom: 15px;
+    }
