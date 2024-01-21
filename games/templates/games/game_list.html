@@ -1,0 +1,194 @@
+{% extends "games/base.html" %}
+{% load static %}
+
+
+{% block title %}
+Каталог
+{% endblock %}
+
+
+{% block additional_css %}
+<link href="{% static 'css/game_list.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+<!--Пошук та відображення кількості ігор-->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 text-white text-decoration-none px-3 py-1  rounded-4">
+            <h2>Кількість ігор: {{ total_games }}</h2>
+        </div>
+        <div class="col-md-6  ">
+            <form action="{% url 'games:game_list' %}" method="get">
+                <div class="input-group ">
+                    <input name="search" type="text" value="{{ request.GET.search }}"
+                           class="form-control  border border-danger-subtle"
+                           placeholder="Пошук">
+                    <button class="btn btn-outline-secondary text-light border border-danger-subtle"
+                            style="background-color: #f94ca4;" type="submit">Пошук
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--Фільтр пошуку ігор та каталог ігор-->
+<div class="container mt-3">
+
+
+    <div class="col-md-4 ms-auto ">
+        <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'games:game_list' %}?sort_by=create_date" class="btn btn-primary me-md-2">За датою
+                створення</a>
+            <a href="{% url 'games:game_list' %}?sort_by=name" class="btn btn-primary">За алфавітом</a>
+        </div>
+    </div>
+
+    <div class="filter bg-dark text-light border border-danger-subtle">
+        <button id="toggleFilterButton" class="btn btn-dark d-md-none d-grid gap-2 col-6 mx-auto " type="button"
+                style="background-color: #f94ca4;"
+                data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+            <i class="fa-solid fa-filter"> Фільтр</i>
+        </button>
+
+        <form class="collapse show gap-2 mx-auto" id="collapseExample" method="get"
+              action="{% url 'games:game_list' %}">
+            <h4 class="mb-3 d-none d-md-block text-center">Фільтри</h4>
+            <hr>
+            <div class="mb-3">
+                <label class="form-check-label justify-content-center d-flex" for="platforms">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#filter_platforms" aria-expanded="true" aria-controls="filter_platforms">
+                        Platforms
+                    </button>
+                </label>
+                {% for platform in platforms %}
+                <div class="collapse show " id="filter_platforms">
+                    <input class="form-check-input" type="checkbox" id="platforms" name="platforms"
+                           value="{{ platform.url }}">
+                    <span class="span editContent">{{ platform.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="form-check-label justify-content-center d-flex" for="genres">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#filter_genres" aria-expanded="true" aria-controls="filter_genres">
+                        Genre
+                    </button>
+                </label>
+                {% for genre in genres %}
+                <div class="collapse show " id="filter_genres">
+                    <input class="form-check-input" type="checkbox" id="genres" name="genres" value="{{ genre.url }}">
+                    <span class="span editContent">{{ genre.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="form-check-label justify-content-center d-flex" for="country">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#filter_country" aria-expanded="true" aria-controls="filter_country">
+                        Country
+                    </button>
+                </label>
+                {% for game in country %}
+                <div class="collapse show " id="filter_country">
+                    <input class="form-check-input" type="checkbox" id="country" name="country"
+                           value="{{ game.country }}">
+                    <span class="span editContent">{{ game.country }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="justify-content-center d-flex">
+                <button class="btn btn-primary"
+                        style="background-color: #f94ca4;" type="submit">Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="post">
+        {% for game in games %}
+        <div class="card bg-dark text-light border border-danger-subtle">
+            <div class="row g-0">
+                <div class="col-md-4  d-flex shadow-none ">
+                    <img src="{{ game.poster.url }}" class="img-fluid" alt="Зображення гри">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body ">
+                        <a href="{% url 'games:game_detail'  game_slug=game.url %}"
+                           style="color: #ffd700; font-weight: bold;"><h5 class="card-title">{{ game.name }}</h5>
+                        </a>
+                        <p class="card-text">{{ game.description }}</p>
+                        <p class="card-text justify-content-between d-flex">
+                            <small>Країна: {{ game.country }}</small>
+                            <small class="">{{ game.release_date }}</small>
+                        </p>
+                        <p class="card-text">
+
+                        <div>
+                            <i class="fa-solid fa-hashtag">Теги: </i>
+                            {% for genre in game.genres.all %}
+                            <button type="button" class="btn btn-danger" value="{{ genre.url }}" name="genre"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                <a class='text-light' href="#">{{ genre.name }}</a>
+                            </button>
+                            {% endfor %}
+                        </div>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+        <hr>
+        <!-- Пагінатор -->
+
+        <div class="row gy-3 ">
+            <div class="col-md-12 text-center ">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
+                                                 href="#">Попередня</a>
+                        </li>
+                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
+                                                 href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
+                                                 href="#">2</a>
+                        </li>
+                        <!-- Додайте інші сторінки тут -->
+                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
+                                                 href="#">Наступна</a></li>
+                    </ul>
+
+                </nav>
+            </div>
+        </div>
+
+        <!-- Додайте інші горизонтальні карточки за аналогією -->
+    </div>
+</div>
+<!--Скрипт для фільтру-->
+
+<script>document.getElementById('sortSelect').addEventListener('change', function () {
+      document.getElementById('sortForm').submit();
+    });
+</script>
+<script src="{% static 'js/game_list.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,210 @@
+{% extends "games/base.html" %}
+{% load static %}
+
+
+{% block title %}
+Гра
+{% endblock %}
+
+
+{% block additional_css %}
+<link rel="stylesheet" href="{% static 'css/game_detail.css' %}" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5 text-light">
+    <div class="row">
+        <div class="col-md-6 ">
+            <h1 class="mb-5"  style="color: #ffd700; font-weight: bold;">{{ game.name }}</h1>
+        </div>
+
+        <div class="col-md-6  ">
+            <div class="input-group ">
+                <input type="text" class="form-control  border border-danger-subtle"
+                       placeholder="Пошук">
+                <button class="btn btn-outline-secondary text-light border border-danger-subtle"
+                        style="background-color: #f94ca4;" type="button">Пошук
+                </button>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs mb-3 border-1  border-danger-subtle" id="contentTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="mainContent-tab" data-bs-toggle="tab" href="#mainContent">Про гру</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-bs-toggle="tab" href="#comments">Коментарі та відгуки</a>
+        </li>
+    </ul>
+    <!-- Зміст вкладок -->
+    <div class="tab-content ">
+        <!-- Вміст для вкладки "Головний контент" -->
+        <div class="tab-pane fade show active" id="mainContent">
+            <!-- Ваш головний контент -->
+            <div class="row ">
+                <div class="col-lg-8">
+                    <!-- Відео або банер -->
+                    <!-- Замініть URL відео або зображення на свої -->
+
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <!-- Якщо є відео -->
+                        {% if game.youtube_video_url %}
+                        <div class="ratio ratio-16x9 ">
+                            <iframe src="{{ game.youtube_video_url }}"
+                                    title="YouTube video"
+                                    allowfullscreen></iframe>
+                        </div>
+                        {% else %}
+                        <div class="ratio ratio-16x9 ">
+                            <img src="{{ game.poster.url }}" class="poster border border-danger-subtle"
+                                 alt="Постер гри">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Список скріншотів -->
+
+                    <ul class="screenshot-list ">
+                        {% for image in game.gamescreenshot_set.all %}
+                        <li class="screenshot-item">
+                            <a href="{{ image.image.url }}" data-lightbox="game-screenshots" data-title="Скріншот">
+                                <img src="{{ image.image.url }}"
+                                     class="screenshot-img"
+                                     alt="Скріншот 1">
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card bg-dark text-light border border-danger-subtle">
+                        <div class="row g-0">
+                            <div class="card-body ">
+                                <h5 class="card-title">Ціна: {{ game.price }} ₴</h5>
+                                <!--                                <p class="card-text">Додаткова інформація про продукт, якщо потрібно.</p>-->
+
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-between d-flex">
+
+                                    <a href="{{ game.steam }}" style="color:white;"><i
+                                            class="fa-brands fa-steam fa-2x"> </i></a>
+                                    <a href="#" class="btn btn-primary "
+                                       style="background-color: #f94ca4;">Придбати</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poster-container ">
+                        <img src="{{ game.poster.url }}" class="poster border border-danger-subtle"
+                             alt="Постер гри">
+                    </div>
+
+                    <div class="card bg-dark text-light border border-danger-subtle">
+                        <div class="row g-0">
+                            <div class="card-body ">
+                                <!-- Опис гри -->
+                                <p>{{ game.description }}</p>
+
+                                <!-- Інша інформація -->
+                                <ul class="mt-5 mb-5">
+                                    <li class="mt-2"><strong>Рік випуску: </strong>{{ game.release_date }}</li>
+                                    <li class="mt-2"><strong>Країна: </strong>{{ game.country }}</li>
+                                    <li class="mt-2"><strong>Виробник: </strong>{{ game.company_name }}</li>
+                                </ul>
+
+                                <p class="cart-text">
+                                    <i class="fa-solid fa-hashtag"> Жанри: </i>
+                                    {% for genre in game.genres.all %}
+                                    <button type="button" class="btn btn-danger" value="{{ genre.id }}"
+                                            name="genre"
+                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                        <a class='text-light text-decoration-none' href="#">{{ genre.name }}</a>
+                                    </button>
+                                    {% endfor %}
+                                </p>
+
+                                <p class="cart-text">
+                                    <i class="fa-solid fa-gamepad"> Платформа: </i>
+                                    {% for platform in game.platforms.all %}
+                                    <button type="button" class="btn btn-danger" value="{{ platform.id }}"
+                                            name="platform"
+                                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                        <a class='text-light text-decoration-none' href="#">{{ platform.name }}</a>
+                                    </button>
+                                    {% endfor %}
+                                </p>
+
+
+                                <!-- Додайте іншу інформацію за потребою -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Вміст для вкладки "Коментарі" -->
+        <div class="tab-pane fade " id="comments">
+            <!-- Тут може бути ваш вміст коментарів -->
+            <div class="card">
+                <div class="row g-0">
+                    <div class="card-body bg-dark text-light border border-danger-subtle">
+                        <!-- Форма для додавання коментарів -->
+                        <form class="comment-form">
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Коментар</label>
+                                <textarea class="form-control" id="commentText" rows="3"
+                                          placeholder="Ваш коментар"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Додати
+                                коментар
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="row g-0">
+                    <div class="card-body bg-dark text-light border border-danger-subtle">
+                        <!-- Форма для додавання коментарів -->
+                        <div id="comments-block" class="comment-list ">
+                            <!-- Приклад коментарів -->
+
+                            <!-- Додайте інші коментарі за потребою -->
+                            <div class="comment-item ">
+                                <strong class="mb-5"><a href="#"><img src="https://github.com/mdo.png" alt="mdo"
+                                                                      width="32" height="32"
+                                                                      class="rounded-circle"></a> Ім'я
+                                    користувача</strong>
+                                <p class="mt-3">Текст коментаря...</p>
+                                <hr>
+                            </div>
+                            <div class="comment-item">
+                                <strong><a href="#"><img src="https://github.com/mdo.png" alt="mdo" width="32"
+                                                         height="32"
+                                                         class="rounded-circle"></a> Ім'я користувача</strong>
+                                <p class="mt-3">Текст коментаря...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Блок для відображення коментарів -->
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

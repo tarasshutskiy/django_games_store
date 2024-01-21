@@ -22,11 +22,13 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ['name', 'poster', 'year', 'price', 'draft']
+    list_display = ['name', 'poster', 'price', 'draft']
     search_fields = ['name', 'year']
 
 
 @admin.register(GameScreenshot)
 class GameScreenshotAdmin(admin.ModelAdmin):
-    list_display = ['game', ]
-    search_fields = ['game', ]
+    list_display = ['game_name', ]
+    search_fields = ['game_name', ]
+
+
