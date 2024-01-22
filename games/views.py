@@ -3,15 +3,18 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import *
-from .forms import *
+
+from urllib.parse import urlencode, parse_qs, urlsplit, urlunsplit
 
 
 class GameListView(ListView):
     model = Game
     context_object_name = 'games'
     template_name = 'games/game_list.html'
+    filter_params = ['platforms', 'genres', 'country', 'search']
 
     def get_queryset(self):
+        sort_by = self.request.GET.get('sort_by', '')
         platforms = self.request.GET.getlist('platforms')
         genres = self.request.GET.getlist('genres')
         country = self.request.GET.getlist('country')
@@ -28,21 +31,35 @@ class GameListView(ListView):
         else:
             queryset = Game.objects.all()
 
+        if sort_by == 'create_date':
+            queryset = queryset .order_by('create_date')
+        elif sort_by == 'name':
+            queryset = queryset .order_by('name')
+
         return queryset.distinct()
 
     def get_context_data(self, **kwargs):
         # Отримання контексту для передачі додаткових даних в шаблон
         context = super().get_context_data(**kwargs)
+
+        # Додаємо приховані поля для параметрів фільтрації та сортування
+        for filter_param in self.filter_params:
+            context[f'{filter_param}_url'] = ', '.join(self.request.GET.getlist(filter_param)) if filter_param in [
+                'platforms', 'genres'] else self.request.GET.getlist(filter_param)
+
+        # Додаємо URL для сортування
+        current_url = self.request.get_full_path()
+        current_url_parts = urlsplit(current_url)
+        current_query_params = parse_qs(current_url_parts.query)
+        current_query_params['sort_by'] = [self.request.GET.get('sort_by', '')]
+        context['sort_by_url'] = urlunsplit((current_url_parts.scheme, current_url_parts.netloc, current_url_parts.path,
+                                             urlencode(current_query_params, doseq=True), current_url_parts.fragment))
+
+        # Додаємо інші дані в контекст
         context['total_games'] = Game.objects.count()
         context['platforms'] = Platform.objects.all()
         context['genres'] = Genre.objects.all()
         context['country'] = Game.objects.filter().distinct('country')
-
-        sort_by = self.request.GET.get('sort_by')
-        if sort_by == 'create_date':
-            context['games'] = context['games'].order_by('-create_date')
-        elif sort_by == 'name':
-            context['games'] = context['games'].order_by('name')
 
         return context
 

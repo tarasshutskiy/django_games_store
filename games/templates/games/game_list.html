@@ -37,29 +37,40 @@
 
 <!--Фільтр пошуку ігор та каталог ігор-->
 <div class="container mt-3">
-
-
+    <!--Форма для вибору сортування -->
     <div class="col-md-4 ms-auto ">
-        <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="{% url 'games:game_list' %}?sort_by=create_date" class="btn btn-primary me-md-2">За датою
-                створення</a>
-            <a href="{% url 'games:game_list' %}?sort_by=name" class="btn btn-primary">За алфавітом</a>
-        </div>
+        <form action="{% url 'games:game_list' %}" method="get">
+            <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                <!--Шлях до вибору паремтрів сортування  -->
+                {% for filter_param in filter_params %}
+                {% if filter_param in request.GET %}
+                <input type="hidden" name="{{ filter_param }}" value="{{ filter_param  }}">
+                {% endif %}
+                {% endfor %}
+                <!--Кнопки для вибору сортування -->
+                <div class="btn-group" role="group" aria-label="Сортування">
+                    <a href="{{ sort_by_url }}&sort_by=create_date" class="btn btn-primary me-md-2" style="background-color: #f94ca4;">За Датою</a>
+                    <a href="{{ sort_by_url }}&sort_by=name" class="btn btn-primary" style="background-color: #f94ca4;">За Назвою</a>
+                </div>
+            </div>
+        </form>
     </div>
-
+    <!--Форма для фільтрування даних і їх подальшого вибору -->
     <div class="filter bg-dark text-light border border-danger-subtle">
+        <!--Кнопка для розгортання форми при малих екранах -->
         <button id="toggleFilterButton" class="btn btn-dark d-md-none d-grid gap-2 col-6 mx-auto " type="button"
                 style="background-color: #f94ca4;"
                 data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">
             <i class="fa-solid fa-filter"> Фільтр</i>
         </button>
-
+        <!--Форма -->
         <form class="collapse show gap-2 mx-auto" id="collapseExample" method="get"
               action="{% url 'games:game_list' %}">
             <h4 class="mb-3 d-none d-md-block text-center">Фільтри</h4>
             <hr>
             <div class="mb-3">
+                <!--Кнопка для згортання параметрів  -->
                 <label class="form-check-label justify-content-center d-flex" for="platforms">
                     <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#filter_platforms" aria-expanded="true" aria-controls="filter_platforms">
@@ -67,6 +78,7 @@
                     </button>
                 </label>
                 {% for platform in platforms %}
+                <!--Параметрів  -->
                 <div class="collapse show " id="filter_platforms">
                     <input class="form-check-input" type="checkbox" id="platforms" name="platforms"
                            value="{{ platform.url }}">
@@ -76,6 +88,7 @@
             </div>
             <hr>
             <div class="mb-3">
+                <!--Кнопка для згортання параметрів  -->
                 <label class="form-check-label justify-content-center d-flex" for="genres">
                     <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#filter_genres" aria-expanded="true" aria-controls="filter_genres">
@@ -83,6 +96,7 @@
                     </button>
                 </label>
                 {% for genre in genres %}
+                <!--Параметрів  -->
                 <div class="collapse show " id="filter_genres">
                     <input class="form-check-input" type="checkbox" id="genres" name="genres" value="{{ genre.url }}">
                     <span class="span editContent">{{ genre.name }}</span>
@@ -91,6 +105,7 @@
             </div>
             <hr>
             <div class="mb-3">
+                <!--Кнопка для згортання параметрів  -->
                 <label class="form-check-label justify-content-center d-flex" for="country">
                     <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#filter_country" aria-expanded="true" aria-controls="filter_country">
@@ -98,6 +113,7 @@
                     </button>
                 </label>
                 {% for game in country %}
+                <!--Параметрів  -->
                 <div class="collapse show " id="filter_country">
                     <input class="form-check-input" type="checkbox" id="country" name="country"
                            value="{{ game.country }}">
