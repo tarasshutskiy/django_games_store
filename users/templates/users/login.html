@@ -1,4 +1,4 @@
-{% extends "profile/auth.html" %}
+{% extends "users/auth.html" %}
 {% load static %}
 
 
@@ -12,26 +12,29 @@
     <div class="row justify-content-center ">
         <div class="col-md-6">
 
-            <div id="error-message" class="alert alert-danger " role="alert"></div>
-
             <div class="card bg-dark text-light border-danger-subtle">
                 <div class="card-body">
                     <h3 class="text-center">Авторизація</h3>
 
-                    <form id="loginForm">
-                        <div class="mb-3">
-                            <label for="loginEmail" class="form-label">Електронна пошта</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <div class="form-error">
+                            {{ form.non_field_errors }}
                         </div>
+                        {% for f in form %}
                         <div class="mb-3">
-                            <label for="loginPassword" class="form-label">Пароль</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <p><ladel for="{{ f.id_for_label }}">{{ f.label }}</ladel>{{ f }}</p>
                         </div>
+                        <div class="form-error">{{ f.errors }}</div>
+                        {% endfor %}
                         <div class="mb-3 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Увійти</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">
+                                Увійти
+                            </button>
                         </div>
                     </form>
-
+                    <hr>
                     <div class="mb-3 d-flex justify-content-center">
                         <a class="btn btn-link btn-floating mx-1" style="color:white;">
                             <i class="fab fa-google"></i>

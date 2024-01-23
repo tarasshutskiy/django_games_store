@@ -41,16 +41,11 @@
     <div class="col-md-4 ms-auto ">
         <form action="{% url 'games:game_list' %}" method="get">
             <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
-                <!--Шлях до вибору паремтрів сортування  -->
-                {% for filter_param in filter_params %}
-                {% if filter_param in request.GET %}
-                <input type="hidden" name="{{ filter_param }}" value="{{ filter_param  }}">
-                {% endif %}
-                {% endfor %}
                 <!--Кнопки для вибору сортування -->
                 <div class="btn-group" role="group" aria-label="Сортування">
                     <a href="{{ sort_by_url }}&sort_by=create_date" class="btn btn-primary me-md-2" style="background-color: #f94ca4;">За Датою</a>
-                    <a href="{{ sort_by_url }}&sort_by=name" class="btn btn-primary" style="background-color: #f94ca4;">За Назвою</a>
+                    <a href="{{ sort_by_url }}&sort_by=name" class="btn btn-primary me-md-2" style="background-color: #f94ca4;">За Назвою</a>
+                    <a href="{{ sort_by_url }}&sort_by=price" class="btn btn-primary" style="background-color: #f94ca4;">За Ціною</a>
                 </div>
             </div>
         </form>
@@ -155,7 +150,7 @@
                             {% for genre in game.genres.all %}
                             <button type="button" class="btn btn-danger" value="{{ genre.url }}" name="genre"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                <a class='text-light' href="#">{{ genre.name }}</a>
+                                <a class='text-light' href="{% url 'games:genre_list' genre_slug=genre.url %}">{{ genre.name }}</a>
                             </button>
                             {% endfor %}
                         </div>

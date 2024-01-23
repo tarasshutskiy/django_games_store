@@ -46,20 +46,30 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'games:contact' %}">Contact</a>
                     </li>
+                    {% if user.is_staff %}
                     <li class="nav-item">
                         <a class="nav-link" href="#api">API</a>
                     </li>
+                    {% endif %}
                 </ul>
                 <!-- Login /   Sign up-->
+
                 <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3">
-                    <a href="{% url 'users:login' %}" class="text-white text-decoration-none">Login</a>
-                    <a href="{% url 'users:register' %}" class="text-white text-decoration-none px-3 py-1  rounded-4"
-                       style="background-color: #f94ca4;">Sign up</a>
+                    {% if user.is_authenticated or user.is_staff %}
                     <a href="{% url 'users:profile' %}"><img src="https://github.com/mdo.png" alt="mdo"
                                                              width="32" height="32"
                                                              class="rounded-circle"></a>
-                    <a href="#signup" class="text-white text-decoration-none px-3 py-1  rounded-4"
-                       style="background-color: #f94ca4;">Logout</a>
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button class="text-white text-decoration-none px-3 py-1  rounded-4"
+                                style="background-color: #f94ca4;">Logout
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'users:login' %}" class="text-white text-decoration-none">Login</a>
+                    <a href="{% url 'users:register' %}" class="text-white text-decoration-none px-3 py-1  rounded-4"
+                       style="background-color: #f94ca4;">Sign up</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -68,8 +78,6 @@
 
 {% block content%}
 {% endblock %}
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
