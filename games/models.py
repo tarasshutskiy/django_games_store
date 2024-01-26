@@ -44,15 +44,15 @@ class Company(BaseModelMixin, models.Model):
 
 class Game(BaseModelMixin, models.Model):
     description = models.TextField('Описання', null=True)
-    poster = models.ImageField('Постер', upload_to='game_poster/')
+    poster = models.ImageField('Постер', upload_to='game_poster/', blank=True, null=True)
     steam = models.URLField('Steam', blank=True, null=True)
-    price = models.DecimalField('Ціна', max_digits=10, decimal_places=2)
+    price = models.DecimalField('Ціна', max_digits=10, decimal_places=2, blank=True, null=True)
     game_file = models.FileField('Файли з грою', upload_to='game_files/', null=True, blank=True)
     country = models.CharField('Країна', max_length=120, null=True)
     genres = models.ManyToManyField(to=Genre, verbose_name='Жанри', related_name='game_genres')
     platforms = models.ManyToManyField(to=Platform, verbose_name='Платформи', related_name='game_platforms')
     company_name = models.ForeignKey(to=Company, on_delete=models.CASCADE)
-    release_date = models.DateField('Рік', default=2024)
+    release_date = models.PositiveIntegerField('Рік', default=2024)
     create_date = models.DateTimeField('Дата створення поста', auto_now_add=True)
     youtube_video_url = models.URLField('Переглянути в ютубі', blank=True, null=True)
     draft = models.BooleanField('Чорновик', default=False)
@@ -76,11 +76,3 @@ class GameScreenshot(models.Model):
     class Meta:
         verbose_name = 'Скріншот'
         verbose_name_plural = 'Скріншоти'
-
-
-#     def get_model_name(self):
-#         return self._meta.model_name
-#
-# instance = GameScreenshot()
-# model_name = instance.get_model_name()
-# print(model_name)

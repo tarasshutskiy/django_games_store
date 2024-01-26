@@ -17,16 +17,16 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-md-6 text-white text-decoration-none px-3 py-1  rounded-4">
-            <h2>Кількість ігор: {{ total_games }}</h2>
+            <h2>Games : {{ total_games }}</h2>
         </div>
         <div class="col-md-6  ">
             <form action="{% url 'games:game_list' %}" method="get">
                 <div class="input-group ">
                     <input name="search" type="text" value="{{ request.GET.search }}"
                            class="form-control  border border-danger-subtle"
-                           placeholder="Пошук">
+                           placeholder="Search">
                     <button class="btn btn-outline-secondary text-light border border-danger-subtle"
-                            style="background-color: #f94ca4;" type="submit">Пошук
+                            style="background-color: #f94ca4;" type="submit">Search
                     </button>
                 </div>
             </form>
@@ -43,9 +43,12 @@
             <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
                 <!--Кнопки для вибору сортування -->
                 <div class="btn-group" role="group" aria-label="Сортування">
-                    <a href="{{ sort_by_url }}&sort_by=create_date" class="btn btn-primary me-md-2" style="background-color: #f94ca4;">За Датою</a>
-                    <a href="{{ sort_by_url }}&sort_by=name" class="btn btn-primary me-md-2" style="background-color: #f94ca4;">За Назвою</a>
-                    <a href="{{ sort_by_url }}&sort_by=price" class="btn btn-primary" style="background-color: #f94ca4;">За Ціною</a>
+                    <a href="{{ sort_by_url }}&sort_by=create_date" class="btn btn-primary me-md-2"
+                       style="background-color: #f94ca4;">By Date</a>
+                    <a href="{{ sort_by_url }}&sort_by=name" class="btn btn-primary me-md-2"
+                       style="background-color: #f94ca4;">By Name</a>
+                    <a href="{{ sort_by_url }}&sort_by=price" class="btn btn-primary"
+                       style="background-color: #f94ca4;">By Price</a>
                 </div>
             </div>
         </form>
@@ -57,12 +60,12 @@
                 style="background-color: #f94ca4;"
                 data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">
-            <i class="fa-solid fa-filter"> Фільтр</i>
+            <i class="fa-solid fa-filter"></i>
         </button>
         <!--Форма -->
         <form class="collapse show gap-2 mx-auto" id="collapseExample" method="get"
               action="{% url 'games:game_list' %}">
-            <h4 class="mb-3 d-none d-md-block text-center">Фільтри</h4>
+            <h4 class="mb-3 d-none d-md-block text-center">Filters</h4>
             <hr>
             <div class="mb-3">
                 <!--Кнопка для згортання параметрів  -->
@@ -101,6 +104,25 @@
             <hr>
             <div class="mb-3">
                 <!--Кнопка для згортання параметрів  -->
+                <label class="form-check-label justify-content-center d-flex" for="release_date">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#filter_release_date" aria-expanded="true"
+                            aria-controls="filter_release_date">
+                        Year
+                    </button>
+                </label>
+                {% for game in release_date %}
+                <!--Параметрів  -->
+                <div class="collapse show " id="filter_release_date">
+                    <input class="form-check-input" type="checkbox" id="release_date" name="release_date"
+                           value="{{ game.release_date }}">
+                    <span class="span editContent">{{ game.release_date }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="mb-3">
+                <!--Кнопка для згортання параметрів  -->
                 <label class="form-check-label justify-content-center d-flex" for="country">
                     <button class="btn btn-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#filter_country" aria-expanded="true" aria-controls="filter_country">
@@ -119,7 +141,7 @@
             <hr>
             <div class="justify-content-center d-flex">
                 <button class="btn btn-primary"
-                        style="background-color: #f94ca4;" type="submit">Filter
+                        style="background-color: #f94ca4;" type="submit">Go
                 </button>
             </div>
         </form>
@@ -131,7 +153,8 @@
         <div class="card bg-dark text-light border border-danger-subtle">
             <div class="row g-0">
                 <div class="col-md-4  d-flex shadow-none ">
-                    <img src="{{ game.poster.url }}" class="img-fluid" alt="Зображення гри">
+                    <img src="{% if game.poster %} {{ game.poster.url }} {% else %} {% static 'img/default-image.jpg' %}{% endif %}"
+                         class="img-fluid" alt="Зображення гри">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body ">
@@ -140,17 +163,18 @@
                         </a>
                         <p class="card-text">{{ game.description }}</p>
                         <p class="card-text justify-content-between d-flex">
-                            <small>Країна: {{ game.country }}</small>
+                            <small>Country: {{ game.country }}</small>
                             <small class="">{{ game.release_date }}</small>
                         </p>
                         <p class="card-text">
 
                         <div>
-                            <i class="fa-solid fa-hashtag">Теги: </i>
-                            {% for genre in game.genres.all %}
-                            <button type="button" class="btn btn-danger" value="{{ genre.url }}" name="genre"
+                            <i class="fa-solid fa-hashtag"></i> Tags:
+                            {% for genre in game.genres.all|dictsort:"name" %}
+                            <button type="button" class="btn btn-danger my-1" value="{{ genre.url }}" name="genre"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                <a class='text-light' href="{% url 'games:genre_list' genre_slug=genre.url %}">{{ genre.name }}</a>
+                                <a class='text-light' href="{% url 'games:genre_list' genre_slug=genre.url %}">
+                                    {{ genre.name }}</a>
                             </button>
                             {% endfor %}
                         </div>
@@ -185,6 +209,9 @@
                 </nav>
             </div>
         </div>
+
+
+
 
         <!-- Додайте інші горизонтальні карточки за аналогією -->
     </div>

@@ -14,7 +14,7 @@
             <div class="card bg-dark text-light border-danger-subtle">
                 <div class="card-body">
 
-                    <h3 class="text-center">Реєстрація</h3>
+                    <h3 class="text-center">Registration</h3>
 
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -24,13 +24,14 @@
                         </div>
                         {% for f in form %}
                         <div class="mb-3">
-                            <p><ladel for="{{ f.id_for_label }}">{{ f.label }}</ladel>{{ f }}</p>
+                            <ladel for="{{ f.id_for_label }}">{{ f.label }}</ladel>
+                            {{ f }}
                         </div>
                         <div class="form-error">{{ f.errors }}</div>
                         {% endfor %}
                         <div class="mb-3 d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">
-                                Зареєструватися
+                                Sign up
                             </button>
                         </div>
                     </form>

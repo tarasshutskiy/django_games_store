@@ -7,9 +7,6 @@
 {% endblock %}
 
 
-
-
-
 {% block content %}
 <div class="container py-5">
     <div class="row">
@@ -17,8 +14,65 @@
         <div class="col-md-4 py-3">
             <div class="card">
                 <div class="card-body text-center bg-dark text-light border-danger-subtle">
-                    <div class="mb-3"><img src="{% static 'img/background.jpg' %}" alt="Фотографія профілю"
-                                           class="img-fluid rounded-circle mb-3" style="width:200px; height:200px;"></div>
+                    <h2 class="card-title text-center mb-4">Профіль</h2>
+                    <div class="mb-3 mt-3">
+                        <img src="{% if user.profile_picture %} {{ user.profile_picture.url }} {% else %} {% static 'img/default-profile.jpg' %}{% endif %}"
+                             alt="Фотографія профілю"
+                             class="img-fluid rounded-circle mb-3" style="width:200px; height:200px;">
+                    </div>
+                    <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+                        <div class="form-error">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% csrf_token %}
+                        <div class="form-error">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% for f in form %}
+                        {% if f.name != 'password' %}
+                        <div class="mb-3">
+                            <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+                            {{ f }}
+                        </div>
+                        <div class="form-error">{{ f.errors }}</div>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="mb-3">
+                            <input class="btn btn-primary" type="submit" value="Save"
+                                   style="background-color: #f94ca4;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Центральна колонка -->
+        <div class="col-md-4 py-3">
+            <div class="card">
+                <div class="card-body bg-dark text-light border-danger-subtle">
+                    <h2 class="card-title text-center mb-4">Історія покупок</h2>
+                    <div class="mb-3">
+                        <h3 class="mb-3">Список вказаних ігор</h3>
+                        <ul>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <li><strong>Гра A</strong> - <small>Ціна</small></li>
+                            <!-- Додайте інші елементи списку за потреби -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Права колонка -->
+        <div class="col-md-4 py-3">
+            <div class="card">
+                <div class="card-body text-center bg-dark text-light border-danger-subtle">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username:</label>
                         <input type="text" id="username" class="form-control" readonly value="example_username">
@@ -37,61 +91,6 @@
             </div>
         </div>
 
-        <!-- Центральна колонка -->
-        <div class="col-md-4 py-3">
-            <div class="card">
-                <div class="card-body bg-dark text-light border-danger-subtle">
-                    <h2 class="card-title text-center mb-4">Профіль</h2>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Email:</label>
-                        <input type="email" id="email" class="form-control"  value="example_username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">Прізвище:</label>
-                        <input type="text" id="lastName" class="form-control"  value="Прізвище">
-                    </div>
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">Ім'я:</label>
-                        <input type="text" id="firstName" class="form-control"  value="Ім'я">
-                    </div>
-                    <div class="mb-3">
-                        <label for="dob" class="form-label">Дата народження:</label>
-                        <input type="text" id="dob" class="form-control"  value="01.01.1990">
-                    </div>
-                    <div class="mb-3">
-                        <label for="country" class="form-label">Країна:</label>
-                        <input type="text" id="country" class="form-control"  value="Україна">
-                    </div>
-                    <div class="mb-3">
-                        <label for="country" class="form-label">Phone:</label>
-                        <input type="text" id="phone" class="form-control"  value="Україна">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Права колонка -->
-        <div class="col-md-4 py-3">
-            <div class="card">
-                <div class="card-body bg-dark text-light border-danger-subtle">
-                    <h2 class="card-title text-center mb-4">Історія покупок</h2>
-                    <div class="mb-3">
-                    <h3 class="mb-3">Список вказаних ігор</h3>
-                    <ul>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <li><strong>Гра A</strong>  - <small>Ціна</small>  </li>
-                        <!-- Додайте інші елементи списку за потреби -->
-                    </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

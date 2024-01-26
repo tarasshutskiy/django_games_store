@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
-from django.shortcuts import redirect
-from .forms import LoginForm, UserRegisterForm
-from django.views.generic import CreateView
+from django.shortcuts import redirect, reverse
+from .forms import LoginForm, UserRegisterForm, UserProfileForm
+from django.views.generic import CreateView, UpdateView
+from django.contrib.auth import get_user_model
 
 
 class UserLoginView(LoginView):
@@ -25,10 +26,19 @@ class RegisterUserView(CreateView):
         return redirect('games:game_list')
 
 
+class UserProfileView(UpdateView):
+    model = get_user_model()
+    form_class = UserProfileForm
+    template_name = 'users/profile.html'
+    success_url = reverse_lazy('users:profile')
 
+    def get_object(self, queryset=None):
+        return self.request.user
 
-def profile(request):
-    return render(request, 'users/profile.html')
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        print(form.errors)
+        return redirect(reverse('users:profile'))
 
 
 def password_change_done(request):

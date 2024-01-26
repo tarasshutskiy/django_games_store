@@ -20,21 +20,24 @@
         </div>
 
         <div class="col-md-6  ">
-            <div class="input-group ">
-                <input type="text" class="form-control  border border-danger-subtle"
-                       placeholder="Пошук">
-                <button class="btn btn-outline-secondary text-light border border-danger-subtle"
-                        style="background-color: #f94ca4;" type="button">Пошук
-                </button>
-            </div>
+            <form action="{% url 'games:game_list' %}" method="get">
+                <div class="input-group ">
+                    <input name="search" type="text" value="{{ request.GET.search }}"
+                           class="form-control  border border-danger-subtle"
+                           placeholder="Search">
+                    <button class="btn btn-outline-secondary text-light border border-danger-subtle"
+                            style="background-color: #f94ca4;" type="submit">Search
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <ul class="nav nav-tabs mb-3 border-1  border-danger-subtle" id="contentTabs">
         <li class="nav-item">
-            <a class="nav-link active" id="mainContent-tab" data-bs-toggle="tab" href="#mainContent">Про гру</a>
+            <a class="nav-link active" id="mainContent-tab" data-bs-toggle="tab" href="#mainContent">The Game</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="comments-tab" data-bs-toggle="tab" href="#comments">Коментарі та відгуки</a>
+            <a class="nav-link" id="comments-tab" data-bs-toggle="tab" href="#comments">Comments</a>
         </li>
     </ul>
     <!-- Зміст вкладок -->
@@ -56,52 +59,55 @@
                                     allowfullscreen></iframe>
                         </div>
                         {% else %}
-                        <div class="ratio ratio-16x9 ">
-                            <img src="{{ game.poster.url }}" class="poster border border-danger-subtle"
+                        <div class="poster border border-danger-subtle">
+                            <img src="{% if game.poster %} {{ game.poster.url }} {% else %} {% static 'img/default-image.jpg' %}{% endif %}"
+                                 class="img-responsive img-fluid"
                                  alt="Постер гри">
                         </div>
                         {% endif %}
                     </div>
-
                     <!-- Список скріншотів -->
-
-                    <ul class="screenshot-list ">
-                        {% for image in game.gamescreenshot_set.all %}
-                        <li class="screenshot-item">
-                            <a href="{{ image.image.url }}" data-lightbox="game-screenshots" data-title="Скріншот">
-                                <img src="{{ image.image.url }}"
-                                     class="screenshot-img"
-                                     alt="Скріншот 1">
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-
+                    <div>
+                        <ul class="screenshot-list ">
+                            {% for image in game.gamescreenshot_set.all %}
+                            <li class="screenshot-item">
+                                <a href="{{ image.image.url }}" data-lightbox="game-screenshots" data-title="Скріншот">
+                                    <img src="{{ image.image.url }}"
+                                         class="screenshot-img"
+                                         alt="Скріншот 1">
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="card bg-dark text-light border border-danger-subtle">
                         <div class="row g-0">
                             <div class="card-body ">
-                                <h5 class="card-title">Ціна: {{ game.price }} ₴</h5>
-                                <p class="card-text">Також, якщо ви користуєтеся платформою "Steam", можете перейти
-                                    нажавши кнопку</p>
-
-
+                                <h5 class="card-title">
+                                    {% if game.price %}
+                                    Price: {{ game.price }} ₴
+                                    {% else %}
+                                    Available on STEAM
+                                    {% endif %}
+                                </h5>
+                                <p class="card-text">Also, if you use the "Steam" platform, you can switch by pressing
+                                    the button</p>
                                 <div class="d-grid gap-2 d-md-flex justify-content-between d-flex">
-
                                     <a href="{{ game.steam }}" style="color:white;"><i
                                             class="fa-brands fa-steam fa-2x"> </i></a>
                                     <a href="#" class="btn btn-primary "
-                                       style="background-color: #f94ca4;">Придбати</a>
+                                       style="background-color: #f94ca4;">Buy</a>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
                     <div class="poster-container ">
-                        <img src="{{ game.poster.url }}" class="poster border border-danger-subtle"
+                        <img src="{% if game.poster %} {{ game.poster.url }} {% else %} {% static 'img/default-image.jpg' %}{% endif %}"
+                             class="poster border border-danger-subtle"
                              alt="Постер гри">
                     </div>
 
@@ -110,39 +116,33 @@
                             <div class="card-body ">
                                 <!-- Опис гри -->
                                 <p>{{ game.description }}</p>
-
                                 <!-- Інша інформація -->
                                 <ul class="mt-5 mb-5">
-                                    <li class="mt-2"><strong>Рік випуску: </strong>{{ game.release_date }}</li>
-                                    <li class="mt-2"><strong>Країна: </strong>{{ game.country }}</li>
-                                    <li class="mt-2"><strong>Виробник: </strong>{{ game.company_name }}</li>
+                                    <li class="mt-2"><strong> Year of release: </strong>{{ game.release_date }}</li>
+                                    <li class="mt-2"><strong> Country: </strong>{{ game.country }}</li>
+                                    <li class="mt-2"><strong> Company: </strong>{{ game.company_name }}</li>
                                 </ul>
-
                                 <p class="cart-text">
-                                    <i class="fa-solid fa-hashtag"> Жанри: </i>
-                                    {% for genre in game.genres.all %}
-                                    <button type="button" class="btn btn-danger" value="{{ genre.id }}"
+                                    <i class="fa-solid fa-hashtag"></i> Genres:
+                                    {% for genre in game.genres.all|dictsort:"name" %}
+                                    <button type="button" class="btn btn-danger my-1" value="{{ genre.id }}"
                                             name="genre"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                         <a class='text-light text-decoration-none' href="#">{{ genre.name }}</a>
                                     </button>
                                     {% endfor %}
                                 </p>
-
                                 <p class="cart-text">
-                                    <i class="fa-solid fa-gamepad"> Платформа: </i>
-                                    {% for platform in game.platforms.all %}
-                                    <button type="button" class="btn btn-danger" value="{{ platform.id }}"
+                                    <i class="fa-solid fa-gamepad"></i> Platform:
+                                    {% for platform in game.platforms.all|dictsort:"name" %}
+                                    <button type="button" class="btn btn-danger my-1" value="{{ platform.id }}"
                                             name="platform"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                         <a class='text-light text-decoration-none' href="#">{{ platform.name }}</a>
                                     </button>
                                     {% endfor %}
                                 </p>
-
-
                                 <!-- Додайте іншу інформацію за потребою -->
-
                             </div>
                         </div>
                     </div>
@@ -156,50 +156,51 @@
                 <div class="row g-0">
                     <div class="card-body bg-dark text-light border border-danger-subtle">
                         <!-- Форма для додавання коментарів -->
-                        <form class="comment-form">
+                        <form method="post" action="{% url 'games:game_detail'  game_slug=game.url %}">
+                            {% csrf_token %}
+                            {% for f in form %}
                             <div class="mb-3">
-                                <label for="commentText" class="form-label">Коментар</label>
-                                <textarea class="form-control" id="commentText" rows="3"
-                                          placeholder="Ваш коментар"></textarea>
+                                <ladel for="{{ f.id_for_label }}">{{ f.label }}</ladel>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Додати
-                                коментар
+                            <div class="mb-3">
+                                {{ f }}
+                            </div>
+                            <div class="form-error">{{ f.errors }}</div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Add a
+                                comment
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
+            {% if comments %}
             <div class="card">
                 <div class="row g-0">
                     <div class="card-body bg-dark text-light border border-danger-subtle">
-                        <!-- Форма для додавання коментарів -->
                         <div id="comments-block" class="comment-list ">
                             <!-- Приклад коментарів -->
 
-                            <!-- Додайте інші коментарі за потребою -->
                             <div class="comment-item ">
-                                <strong class="mb-5"><a href="#"><img src="https://github.com/mdo.png" alt="mdo"
-                                                                      width="32" height="32"
-                                                                      class="rounded-circle"></a> Ім'я
-                                    користувача</strong>
-                                <p class="mt-3">Текст коментаря...</p>
+                                {% for comment in comments %}
+                                <strong class="mb-5"><a href="#"><img
+                                        src="{% if user.profile_picture %} {{ user.profile_picture.url }} {% else %} {% static 'img/background.jpg' %}{% endif %}"
+                                        alt="mdo"
+                                        width="32" height="32"
+                                        class="rounded-circle"></a> {{ comment.user.username }}
+                                </strong>
+                                <p class="mt-3">{{ comment.text }}</p>
                                 <hr>
+
                             </div>
-                            <div class="comment-item">
-                                <strong><a href="#"><img src="https://github.com/mdo.png" alt="mdo" width="32"
-                                                         height="32"
-                                                         class="rounded-circle"></a> Ім'я користувача</strong>
-                                <p class="mt-3">Текст коментаря...</p>
-                            </div>
+                            {% endfor %}
+
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Блок для відображення коментарів -->
-
+            {% endif %}
         </div>
-
-
     </div>
 </div>
 {% endblock %}
