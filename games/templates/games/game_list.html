@@ -141,7 +141,7 @@
             <hr>
             <div class="justify-content-center d-flex">
                 <button class="btn btn-primary"
-                        style="background-color: #f94ca4;" type="submit">Go
+                        style="background-color: #f94ca4;" type="submit">Search
                 </button>
             </div>
         </form>
@@ -164,10 +164,9 @@
                         <p class="card-text">{{ game.description }}</p>
                         <p class="card-text justify-content-between d-flex">
                             <small>Country: {{ game.country }}</small>
-                            <small class="">{{ game.release_date }}</small>
+                            <small>Year: {{ game.release_date }}</small>
                         </p>
                         <p class="card-text">
-
                         <div>
                             <i class="fa-solid fa-hashtag"></i> Tags:
                             {% for genre in game.genres.all|dictsort:"name" %}
@@ -179,6 +178,9 @@
                             {% endfor %}
                         </div>
                         </p>
+                        <div class="card-text justify-content-end d-flex">
+                            <h4>{{ game.price }} ₴</h4>
+                        </div>
                     </div>
                 </div>
 
@@ -186,31 +188,42 @@
         </div>
         {% endfor %}
         <hr>
-        <!-- Пагінатор -->
 
+
+
+        <!-- Пагінатор -->
+        {% if page_obj.has_other_pages %}
         <div class="row gy-3 ">
             <div class="col-md-12 text-center ">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
-                                                 href="#">Попередня</a>
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link text-light" style="background-color: #f94ca4;"
+                               href="?page={{ page_obj.previous_page_number }}">Previous</a>
                         </li>
+                        {% endif %}
+                        {% for p in paginator.page_range %}
+                        {% if page_obj.number == p %}
                         <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
-                                                 href="#">1</a>
+                                                 href="#">{{ p }}</a></li>
+                        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                        <li class="page-item">
+                            <a class="page-link text-light" style="background-color: #f94ca4;" href="?page={{ p }}">{{ p }}</a>
                         </li>
-                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
-                                                 href="#">2</a>
+                        {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                        <li class="page-num">
+                            <a class="page-link text-light" style="background-color: #f94ca4;"
+                               href="?page={{ page_obj.next_page_number }}">Next</a>
                         </li>
-                        <!-- Додайте інші сторінки тут -->
-                        <li class="page-item"><a class="page-link text-light" style="background-color: #f94ca4;"
-                                                 href="#">Наступна</a></li>
+                        {% endif %}
                     </ul>
-
                 </nav>
             </div>
         </div>
-
-
+        {% endif %}
 
 
         <!-- Додайте інші горизонтальні карточки за аналогією -->

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PurchaseHistory
+from .models import PurchaseHistory, Comment
 from django.contrib.auth import get_user_model
 
 
@@ -19,3 +19,8 @@ class PurchaseHistoryAdmin(admin.ModelAdmin):
     search_fields = ['user', ]
 
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'game']
+    list_display_links = ['user', ]
+    search_fields = ['user',]

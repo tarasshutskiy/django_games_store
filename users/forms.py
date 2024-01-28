@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth import get_user_model
 
 
@@ -16,9 +16,6 @@ class LoginForm(AuthenticationForm):
         label='Password',
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', }),
     )
-
-
-
 
 
 class UserRegisterForm(UserCreationForm):
@@ -52,7 +49,9 @@ class UserRegisterForm(UserCreationForm):
 
 class UserProfileForm(UserChangeForm):
     profile_picture = forms.ImageField(
-        widget=forms.FileInput(attrs={'class': 'custom-file-label', }), required=False
+        label='',
+        widget=forms.FileInput(attrs={'class': 'custom-file-label', }),
+        required=False
     )
 
     class Meta:
@@ -74,4 +73,35 @@ class UserProfileForm(UserChangeForm):
         }
 
 
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Old password', })
+    )
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New password', }),
+    )
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New password confirmation', }),
+    )
 
+
+class UserPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+    )
+
+
+class UserPasswordResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )

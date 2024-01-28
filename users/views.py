@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.shortcuts import redirect, reverse
-from .forms import LoginForm, UserRegisterForm, UserProfileForm
+from .forms import LoginForm, UserRegisterForm, UserProfileForm, UserPasswordChangeForm, UserPasswordResetForm, UserPasswordResetConfirmForm
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import get_user_model
 
@@ -41,29 +41,22 @@ class UserProfileView(UpdateView):
         return redirect(reverse('users:profile'))
 
 
-def password_change_done(request):
-    return render(request, 'users/password_change_done.html')
+class UserPasswordChangeView(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "users/password_change_form.html"
 
 
-def password_change_form(request):
-    return render(request, 'users/password_change_form.html')
+class UserPasswordResetView(PasswordResetView):
+    form_class = UserPasswordResetForm
+    success_url = reverse_lazy("users:password_reset_done")
+    email_template_name = "users/password_reset_email.html"
+    template_name = "users/password_reset_form.html"
 
 
-def password_reset_complete(request):
-    return render(request, 'users/password_reset_complete.html')
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = UserPasswordResetConfirmForm
+    success_url = reverse_lazy("users:password_reset_complete")
+    template_name = "users/password_reset_confirm.html"
 
 
-def password_reset_confirm(request):
-    return render(request, 'users/password_reset_confirm.html')
-
-
-def password_reset_done(request):
-    return render(request, 'users/password_reset_done.html')
-
-
-def password_reset_email(request):
-    return render(request, 'users/password_reset_email.html')
-
-
-def password_reset_form(request):
-    return render(request, 'users/password_reset_form.html')

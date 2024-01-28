@@ -14,10 +14,10 @@
         <div class="col-md-4 py-3">
             <div class="card">
                 <div class="card-body text-center bg-dark text-light border-danger-subtle">
-                    <h2 class="card-title text-center mb-4">Профіль</h2>
+                    <h2 class="card-title text-center mb-4">Profile</h2>
                     <div class="mb-3 mt-3">
                         <img src="{% if user.profile_picture %} {{ user.profile_picture.url }} {% else %} {% static 'img/default-profile.jpg' %}{% endif %}"
-                             alt="Фотографія профілю"
+                             alt="Profile photo"
                              class="img-fluid rounded-circle mb-3" style="width:200px; height:200px;">
                     </div>
                     <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
@@ -25,9 +25,6 @@
                             {{ form.non_field_errors }}
                         </div>
                         {% csrf_token %}
-                        <div class="form-error">
-                            {{ form.non_field_errors }}
-                        </div>
                         {% for f in form %}
                         {% if f.name != 'password' %}
                         <div class="mb-3">
@@ -50,9 +47,9 @@
         <div class="col-md-4 py-3">
             <div class="card">
                 <div class="card-body bg-dark text-light border-danger-subtle">
-                    <h2 class="card-title text-center mb-4">Історія покупок</h2>
+                    <h2 class="card-title text-center mb-4">Purchase history</h2>
                     <div class="mb-3">
-                        <h3 class="mb-3">Список вказаних ігор</h3>
+                        <h3 class="mb-3">List of games</h3>
                         <ul>
                             <li><strong>Гра A</strong> - <small>Ціна</small></li>
                             <li><strong>Гра A</strong> - <small>Ціна</small></li>
@@ -73,19 +70,21 @@
         <div class="col-md-4 py-3">
             <div class="card">
                 <div class="card-body text-center bg-dark text-light border-danger-subtle">
+                    <h2 class="card-title text-center mb-4">User</h2>
                     <div class="mb-3">
                         <label for="username" class="form-label">Username:</label>
-                        <input type="text" id="username" class="form-control" readonly value="example_username">
+                        <input type="text" id="username" class="form-control" readonly value="{{ user.username }}">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
-                        <input type="password" id="password" class="form-control" readonly value="example_password">
+                        <input type="password" id="password" class="form-control" readonly value="{{ user.password }">
                     </div>
                     <div class="mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal"
-                                style="background-color: #f94ca4;">
-                            Змінити пароль
-                        </button>
+                        <a href="{% url 'users:password_change' %}">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal"
+                                    style="background-color: #f94ca4;">Change password
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>

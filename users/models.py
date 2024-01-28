@@ -41,8 +41,8 @@ class Comment(BaseModelMixin, models.Model):
         return reverse('games:game_detail')
 
     class Meta:
-        verbose_name = "Comment"
-        verbose_name_plural = "Comments"
+        verbose_name = "Відгук"
+        verbose_name_plural = "Відгуки"
 
 
 

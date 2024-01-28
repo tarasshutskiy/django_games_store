@@ -11,7 +11,7 @@
 <div class="container mt-5 ">
     <div class="row justify-content-center ">
         <div class="col-md-6">
-            <div class="card bg-dark text-light border-danger-subtle">
+            <div class="card bg-dark text-center text-light border-danger-subtle">
                 <div class="card-body">
                     <h3 class="text-center">Authorization</h3>
                     <form method="post" enctype="multipart/form-data">
@@ -43,7 +43,7 @@
                         </a>
                     </div>
                     <div class="mb-3 d-flex justify-content-center">
-                        <p>Don't have an account? <a href="{% url 'users:register' %}">Register here</a></p>
+                        <p>Forgot your password? <a href="{% url 'users:password_reset' %}">Click here</a></p>
                     </div>
                 </div>
             </div>

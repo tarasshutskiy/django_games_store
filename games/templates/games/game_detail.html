@@ -15,10 +15,11 @@
 {% block content %}
 <div class="container mt-5 text-light">
     <div class="row">
+        <!-- Назва гри -->
         <div class="col-md-6 ">
             <h1 class="mb-5" style="color: #ffd700; font-weight: bold;">{{ game.name }}</h1>
         </div>
-
+        <!-- Пошук -->
         <div class="col-md-6  ">
             <form action="{% url 'games:game_list' %}" method="get">
                 <div class="input-group ">
@@ -32,6 +33,7 @@
             </form>
         </div>
     </div>
+    <!-- Вкладки -->
     <ul class="nav nav-tabs mb-3 border-1  border-danger-subtle" id="contentTabs">
         <li class="nav-item">
             <a class="nav-link active" id="mainContent-tab" data-bs-toggle="tab" href="#mainContent">The Game</a>
@@ -42,16 +44,13 @@
     </ul>
     <!-- Зміст вкладок -->
     <div class="tab-content ">
-        <!-- Вміст для вкладки "Головний контент" -->
+        <!-- About Games -->
         <div class="tab-pane fade show active" id="mainContent">
-            <!-- Ваш головний контент -->
             <div class="row ">
+                <!-- Лівий блок -->
                 <div class="col-lg-8">
                     <!-- Відео або банер -->
-                    <!-- Замініть URL відео або зображення на свої -->
-
                     <div class="embed-responsive embed-responsive-16by9">
-                        <!-- Якщо є відео -->
                         {% if game.youtube_video_url %}
                         <div class="ratio ratio-16x9 ">
                             <iframe src="{{ game.youtube_video_url }}"
@@ -81,36 +80,40 @@
                         </ul>
                     </div>
                 </div>
-
+                <!-- Правий блок -->
                 <div class="col-lg-4">
+                    <!-- Покупка -->
+                    {% if game.price %}
                     <div class="card bg-dark text-light border border-danger-subtle">
                         <div class="row g-0">
                             <div class="card-body ">
-                                <h5 class="card-title">
-                                    {% if game.price %}
-                                    Price: {{ game.price }} ₴
-                                    {% else %}
-                                    Available on STEAM
-                                    {% endif %}
-                                </h5>
-                                <p class="card-text">Also, if you use the "Steam" platform, you can switch by pressing
-                                    the button</p>
                                 <div class="d-grid gap-2 d-md-flex justify-content-between d-flex">
-                                    <a href="{{ game.steam }}" style="color:white;"><i
-                                            class="fa-brands fa-steam fa-2x"> </i></a>
+                                    <h5 class="mt-2" class="card-title">
+                                        Buy:
+                                    </h5>
                                     <a href="#" class="btn btn-primary "
-                                       style="background-color: #f94ca4;">Buy</a>
+                                       style="background-color: #f94ca4;">{{ game.price }} ₴</a>
                                 </div>
+                                {% if game.steam %}
+                                <div class="d-grid gap-2 d-md-flex justify-content-between d-flex">
+                                    <p class="mt-3" class="card-text">Also, if you use the "Steam" platform, you can switch by pressing
+                                    the button</p>
+                                    <a class="mt-4" href="{{ game.steam }}"
+                                       style="color:white;"><i
+                                            class="fa-brands fa-steam fa-2x"> </i></a>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-
+                    {% endif %}
+                    <!-- Постер -->
                     <div class="poster-container ">
                         <img src="{% if game.poster %} {{ game.poster.url }} {% else %} {% static 'img/default-image.jpg' %}{% endif %}"
                              class="poster border border-danger-subtle"
                              alt="Постер гри">
                     </div>
-
+                    <!-- Детальний опис гри -->
                     <div class="card bg-dark text-light border border-danger-subtle">
                         <div class="row g-0">
                             <div class="card-body ">
@@ -122,36 +125,35 @@
                                     <li class="mt-2"><strong> Country: </strong>{{ game.country }}</li>
                                     <li class="mt-2"><strong> Company: </strong>{{ game.company_name }}</li>
                                 </ul>
+                                <!-- Жанри -->
                                 <p class="cart-text">
                                     <i class="fa-solid fa-hashtag"></i> Genres:
                                     {% for genre in game.genres.all|dictsort:"name" %}
-                                    <button type="button" class="btn btn-danger my-1" value="{{ genre.id }}"
-                                            name="genre"
+                                    <button class="btn btn-danger my-1"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                        <a class='text-light text-decoration-none' href="#">{{ genre.name }}</a>
+                                        <small>{{ genre.name }}</small>
                                     </button>
                                     {% endfor %}
                                 </p>
+                                <!-- Платформа -->
                                 <p class="cart-text">
                                     <i class="fa-solid fa-gamepad"></i> Platform:
                                     {% for platform in game.platforms.all|dictsort:"name" %}
-                                    <button type="button" class="btn btn-danger my-1" value="{{ platform.id }}"
-                                            name="platform"
+                                    <button class="btn btn-danger my-1"
                                             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                        <a class='text-light text-decoration-none' href="#">{{ platform.name }}</a>
+                                        <small>{{ platform.name }}</small>
                                     </button>
                                     {% endfor %}
                                 </p>
-                                <!-- Додайте іншу інформацію за потребою -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Вміст для вкладки "Коментарі" -->
+        <!-- Comments" -->
         <div class="tab-pane fade " id="comments">
-            <!-- Тут може бути ваш вміст коментарів -->
+            <!-- Форма  -->
             <div class="card">
                 <div class="row g-0">
                     <div class="card-body bg-dark text-light border border-danger-subtle">
@@ -174,32 +176,31 @@
                     </div>
                 </div>
             </div>
-            {% if comments %}
+            <!-- Коментарі  -->
+            {% for comment in comments %}
             <div class="card">
                 <div class="row g-0">
                     <div class="card-body bg-dark text-light border border-danger-subtle">
                         <div id="comments-block" class="comment-list ">
-                            <!-- Приклад коментарів -->
-
+                            {% if comments %}
                             <div class="comment-item ">
-                                {% for comment in comments %}
-                                <strong class="mb-5"><a href="#"><img
-                                        src="{% if user.profile_picture %} {{ user.profile_picture.url }} {% else %} {% static 'img/background.jpg' %}{% endif %}"
-                                        alt="mdo"
-                                        width="32" height="32"
-                                        class="rounded-circle"></a> {{ comment.user.username }}
+                                <strong class="mb-5 justify-content-between d-flex">
+                                    <h5>
+                                        <img src="{% if user.profile_picture %} {{ user.profile_picture.url }} {% else %} {% static 'img/default-profile.jpg' %}{% endif %}"
+                                             alt="mdo"
+                                             width="32" height="32"
+                                             class="rounded-circle"> @{{ comment.user.username }}</h5>
+                                    <p>{{ comment.time_create|date:"H:i d-m-Y " }}</p>
                                 </strong>
                                 <p class="mt-3">{{ comment.text }}</p>
                                 <hr>
-
                             </div>
-                            {% endfor %}
-
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>

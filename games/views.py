@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import *
 from users.models import Comment
-from .forms import CommentForm
+from .forms import CommentForm, FeedbackForm
 from urllib.parse import urlencode, parse_qs, urlsplit, urlunsplit
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, FormView
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class BaseContextMixin(ListView):
@@ -36,6 +38,8 @@ class GameListView(BaseContextMixin, ListView):
     model = Game
     context_object_name = 'games'
     template_name = 'games/game_list.html'
+    paginate_by = 15
+    ordering = ['-release_date']
 
     def get_queryset(self):
         sort_by = self.request.GET.get('sort_by', '')
@@ -71,6 +75,8 @@ class GenreListView(BaseContextMixin, ListView):
     model = Game
     context_object_name = 'games'
     template_name = 'games/game_list.html'
+    paginate_by = 15
+    ordering = ['-release_date']
 
     def get_queryset(self):
         sort_by = self.request.GET.get('sort_by', '')
@@ -134,5 +140,27 @@ class AboutView(TemplateView):
     template_name = 'games/about.html'
 
 
-class ContactView(TemplateView):
+class ContactView(LoginRequiredMixin, FormView):
     template_name = 'games/contact.html'
+    form_class = FeedbackForm
+    success_url = reverse_lazy('games:contact')
+
+    def form_valid(self, form):
+        # Отримання даних з форми
+        message = form.cleaned_data['message']
+        sender_email = self.request.user.email if self.request.user.is_authenticated else None
+
+        # Отправка повідомлення
+        send_mail(
+            'Subject of the email',
+            f'Message from {sender_email}:\n\n{message}',
+            sender_email,
+            ['shapiktaras@gmail.com'],  # Замініть на вашу адресу електронної пошти
+            fail_silently=False,
+        )
+
+        # Додавання повідомлення для користувача
+        messages.success(self.request, 'Your message has been sent successfully!')
+
+        return super().form_valid(form)
+

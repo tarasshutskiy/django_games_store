@@ -2,51 +2,57 @@
 
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card bg-dark text-light border-danger-subtle">
                 <div class="card-body">
                     <header>
-                        <h1 class="text-center">Контактна інформація</h1>
+                        <h1 class="text-center">Contact Information</h1>
                     </header>
-
-
                     <section>
-                        <p>Ми завжди раді відповісти на ваші питання та отримати ваші відгуки. Зв'яжіться з нами за
-                            допомогою
-                            наступних контактів:</p>
+                        <p>We are always happy to answer your questions and receive your feedback. Contact us for
+                            help
+                            the following contacts:</p>
 
                         <ul>
-                            <li>Email: <a href="mailto:info@example.com">info@example.com</a></li>
-                            <li>Телефон: +1 (123) 456-7890</li>
-                            <li>Адреса: вул. Вулична, 123, Місто</li>
+                            <li>Phone: +380 (50) 56-40-468</li>
                         </ul>
                     </section>
-
                     <section>
-                        <h2 class="text-center">Форма зворотного зв'язку</h2>
-                        <p>Ви також можете зв'язатися з нами, заповнивши форму зворотного зв'язку нижче:</p>
-
-                        <form action="submit_form.php" method="post">
-                            <div class="mb-3">
-                                   <strong><a href="#"><img src="https://github.com/mdo.png" alt="mdo" width="32"
-                                                         height="32"
-                                                         class="rounded-circle"></a> Ім'я користувача</strong>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email:</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label">Повідомлення:</label>
-                                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-                            </div>
-                            <div class="mb-3 d-flex justify-content-center">
-                             <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">Надіслати
-                            </button>
+                        <h2 class="text-center">Feedback form</h2>
+                        <p class="text-center">You can also contact us by filling out the feedback form below:</p>
+                        <div class="container">
+                            {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} justify-content-between d-flex" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                        </form>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ next }}">
+                                <div class="form-error">
+                                    {{ form.non_field_errors }}
+                                </div>
+                                {% for f in form %}
+                                <div class="mb-3">
+                                    <ladel for="{{ f.id_for_label }}">{{ f.label }}</ladel>
+                                    {{ f }}
+                                </div>
+                                <div class="form-error">{{ f.errors }}</div>
+                                {% endfor %}
+                                <div class="mb-3 d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary" style="background-color: #f94ca4;">
+                                        Send
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </section>
                 </div>
             </div>

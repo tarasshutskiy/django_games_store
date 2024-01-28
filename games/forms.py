@@ -11,3 +11,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text']
+
+
+class FeedbackForm(forms.Form):
+    message = forms.CharField(
+        label='',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
+    )
