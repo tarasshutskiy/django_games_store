@@ -56,10 +56,9 @@ class GameListView(BaseContextMixin, ListView):
                 Q(genres__url__in=genres) if genres else Q() |
                 Q(country__in=country) if country else Q() |
                 Q(release_date__in=release_date) if release_date else Q() |
-                Q(name__icontains=search_query) if search_query else Q()
-            )
-        else:
-            queryset = Game.objects.all()
+                Q(name__icontains=search_query) if search_query else Q(),
+                draft=False
+            ).prefetch_related('genres')
 
         if sort_by == 'create_date':
             queryset = queryset.order_by('create_date')
@@ -82,7 +81,7 @@ class GenreListView(BaseContextMixin, ListView):
         sort_by = self.request.GET.get('sort_by', '')
         genre_slug = self.kwargs.get('genre_slug')
         genres = Genre.objects.get(url=genre_slug)
-        queryset = Game.objects.filter(genres=genres)
+        queryset = Game.objects.filter(genres=genres, draft=False,).prefetch_related('genres')
 
         if sort_by == 'create_date':
             queryset = queryset.order_by('create_date')

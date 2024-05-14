@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.urls import reverse_lazy
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, reverse
 from .forms import LoginForm, UserRegisterForm, UserProfileForm, UserPasswordChangeForm, UserPasswordResetForm, UserPasswordResetConfirmForm
 from django.views.generic import CreateView, UpdateView
@@ -18,11 +18,16 @@ class RegisterUserView(CreateView):
     """Реєстрація користувача"""
     form_class = UserRegisterForm
     template_name = 'users/registration.html'
-    success_url = reverse_lazy('users:login')
+    success_url = reverse_lazy('users:game_list')
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        # Явно вказуємо бекенд аутентифікації (ваш EmailAuthBackend)
+        user = authenticate(username=user.username,
+                            password=form.cleaned_data['password1'],
+                            backend='users.authentication.EmailAuthBackend')
+        if user is not None:
+            login(self.request, user)
         return redirect('games:game_list')
 
 

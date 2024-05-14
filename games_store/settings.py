@@ -24,7 +24,8 @@ SECRET_KEY = 'django-insecure-&)yjuo4qg=l%ak0bi-q1^@4w2p_@ch#l4llp^#46(!+v!^tbwb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1",]
+INTERNAL_IPS = ["127.0.0.1",]
 
 # Application definition
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'games.apps.GamesConfig',
     'users.apps.UsersConfig',
     'fontawesomefree',
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'games_store.urls'
